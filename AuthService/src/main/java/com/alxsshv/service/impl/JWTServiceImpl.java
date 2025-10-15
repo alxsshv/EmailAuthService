@@ -1,11 +1,7 @@
 package com.alxsshv.service.impl;
 
 import com.alxsshv.entity.Account;
-import com.alxsshv.entity.Authorities;
-import com.alxsshv.exception.JwtProcessingException;
 import com.alxsshv.service.JwtService;
-import com.nimbusds.jwt.JWTClaimsSet;
-import com.nimbusds.jwt.SignedJWT;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,10 +10,8 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,30 +47,4 @@ public class JWTServiceImpl implements JwtService {
         return jwtEncoder.encode(jwtParameters).getTokenValue();
     }
 
-
-    @Override
-    public String getTokenSubject(String token) {
-        JWTClaimsSet claims = parseToken(token);
-        validateDecodedToken(claims);
-        return claims.getSubject();
-    }
-
-    private JWTClaimsSet parseToken(String token) {
-        try {
-            return SignedJWT.parse(token).getJWTClaimsSet();
-        } catch (ParseException ex) {
-            throw new JwtProcessingException("Token is invalid");
-        }
-    }
-
-    private void validateDecodedToken(JWTClaimsSet decodedToken) {
-        String email = decodedToken.getSubject();
-        if (email == null || email.isEmpty()) {
-            throw new JwtProcessingException("Token does not contain a subject");
-        }
-        Instant expireDate = decodedToken.getExpirationTime().toInstant();
-        if (expireDate.isBefore(Instant.now())) {
-            throw new JwtProcessingException("Token is expired");
-        }
-    }
 }

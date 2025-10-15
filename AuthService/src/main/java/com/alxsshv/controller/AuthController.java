@@ -8,12 +8,13 @@ import com.alxsshv.dto.mapper.AccountMapper;
 import com.alxsshv.service.AccountService;
 import com.alxsshv.service.SecurityService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @Validated
 @RestController
@@ -30,7 +31,6 @@ public class AuthController {
 
     @PostMapping("/code")
     public ResponseEntity<ServiceMessage> getAuthorizationCode(@RequestParam @NotBlank String email) {
-        System.out.println("Адрес электронной почты: " + email);
         securityService.getAuthorizationCode(email);
         return ResponseEntity.ok(new ServiceMessage("The authorization code has been sent. Please check your email."));
     }
@@ -42,8 +42,8 @@ public class AuthController {
     }
 
     @GetMapping
-    public ResponseEntity<AccountDto> getCurrentUser() {
-        AccountDto userDto = userMapper.map(accountService.getAccountByEmail("test@mail.com"));
+    public ResponseEntity<AccountDto> getCurrentUser(Principal principal) {
+        AccountDto userDto = userMapper.mapToAccountDto(accountService.getAccountByEmail(principal.getName()));
         return ResponseEntity.ok(userDto);
     }
 

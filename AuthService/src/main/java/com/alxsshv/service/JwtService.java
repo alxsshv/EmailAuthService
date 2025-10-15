@@ -6,6 +6,4 @@ public interface JwtService {
 
     String generateAccessToken(Account account);
 
-    String getTokenSubject(String jwtToken);
-
 }

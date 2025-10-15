@@ -1,21 +1,18 @@
 package com.alxsshv.configuration;
 
-import com.alxsshv.security.AccountDetailsService;
+import com.alxsshv.security.CodeAuthenticationProvider;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,13 +37,11 @@ public class SecurityConfig {
 
     private final RsaProperties rsaProperties;
 
-    private final AccountDetailsService accountDetailsService;
-
+    private final CodeAuthenticationProvider codeAuthenticationProvider;
 
     @Bean
     AuthenticationManager authenticationManager() {
-        var authenticationProvider = new DaoAuthenticationProvider(accountDetailsService);
-        return new ProviderManager(authenticationProvider);
+        return new ProviderManager(codeAuthenticationProvider);
     }
 
     @Bean

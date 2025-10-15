@@ -11,6 +11,7 @@ import com.alxsshv.exception.EntityNotFoundException;
 import com.alxsshv.security.AccountDetails;
 import com.alxsshv.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class SecurityServiceImpl implements SecurityService {
+
+    private final AuthenticationManager authenticationManager;
 
     private final AccountService accountService;
 
@@ -60,10 +63,10 @@ public class SecurityServiceImpl implements SecurityService {
     @Transactional
     public AuthResponse authenticate(AuthRequest request) {
         try {
-            Set<AuthPair> authPairSet = authPairService.getAllByEmail(request.email());
-            validateCode(authPairSet, request.code());
-            Account account = accountService.getAccountByEmail(request.email());
-            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(account.getEmail(), null, account.getAuthorities()));
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.email(), request.code()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            Account account = accountService.getAccountByEmail(authentication.getName());
             activateAccountIfDisable(account);
             AuthResponse authResponse = buildAuthResponse(account);
             authPairService.deleteAllPairsForAccount(account);
@@ -74,11 +77,8 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
 
-    private void  validateCode(Set<AuthPair> authPairSet, String code) {
-        boolean isValidCode = authPairSet.stream()
-                .map(AuthPair::getCode)
-                .anyMatch(authPairCode -> authPairCode.equals(code));
-        if (!isValidCode) {
+    private void validateCode(AuthPair authPair, String code) {
+        if (!authPair.getCode().equals(code)) {
             throw new AuthenticationProcessingException("Ошибка аутентификации. Код не действителен или просрочен");
         }
     }
