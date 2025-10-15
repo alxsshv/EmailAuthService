@@ -1,0 +1,49 @@
+
+spring:
+  application:
+    name: EmailAuthService
+  profiles:
+    active: local
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "local"
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          redis: DEBUG
+
+app:
+  secret:
+    rsa:
+      private-key: classpath:certs/private.pem
+      public-key: classpath:certs/public.pem
+    auth-code:
+      ttl-in-seconds: 300
+    access-token:
+      ttl: 5m
+
