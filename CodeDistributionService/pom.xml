@@ -10,5 +10,17 @@
     <name>CodeDistributionService</name>
     <url>http://maven.apache.org</url>
 
+    <properties>
+        <spring-kafka-version>3.3.10</spring-kafka-version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+            <version>${spring-kafka-version}</version>
+        </dependency>
+    </dependencies>
+
 
 </project>

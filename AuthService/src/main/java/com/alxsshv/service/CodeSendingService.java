@@ -2,7 +2,8 @@ package com.alxsshv.service;
 
 import com.alxsshv.entity.AuthPair;
 
-public interface CodeDistributionService {
+
+public interface CodeSendingService {
 
     void sendCode(AuthPair authPair);
 

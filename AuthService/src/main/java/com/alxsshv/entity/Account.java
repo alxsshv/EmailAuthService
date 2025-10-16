@@ -15,9 +15,9 @@ import java.util.UUID;
 @Table(name = "app_users")
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Getter
 @Setter
+@Builder
 @ToString
 public class Account implements Serializable {
 

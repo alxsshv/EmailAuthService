@@ -1,3 +1,5 @@
+server:
+  port: 8080
 
 spring:
   application:
@@ -29,13 +31,8 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8080/
-
-logging:
-  level:
-    org:
-      springframework:
-        data:
-          redis: DEBUG
+  kafka:
+    bootstrap-servers: localhost:9092
 
 app:
   secret:
@@ -47,3 +44,6 @@ app:
     access-token:
       ttl: 5m
 
+  kafka:
+    codeNotificationTopic: "code-notification-topic"
+    codeNotificationGroupId: "code-notification-group"

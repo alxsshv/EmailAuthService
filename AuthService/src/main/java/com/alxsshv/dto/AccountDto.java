@@ -1,8 +1,15 @@
 package com.alxsshv.dto;
 
 
-public record AccountDto(
-        String id,
-        String email,
-        String status) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class AccountDto {
+        String id;
+        String email;
+        String status;
 }

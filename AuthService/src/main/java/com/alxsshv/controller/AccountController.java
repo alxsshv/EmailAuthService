@@ -25,7 +25,7 @@ public class AccountController {
     @PreAuthorize("hasAuthority('READ_ONLY')")
     public List<AccountDto> getAllAccounts() {
         List<Account> accounts = accountService.getAllAccounts();
-        return accountMapper.mapToAccountsList(accounts);
+        return accountMapper.mapList(accounts);
     }
 
 

@@ -43,7 +43,7 @@ public class AuthController {
 
     @GetMapping
     public ResponseEntity<AccountDto> getCurrentUser(Principal principal) {
-        AccountDto userDto = userMapper.mapToAccountDto(accountService.getAccountByEmail(principal.getName()));
+        AccountDto userDto = userMapper.map(accountService.getAccountByEmail(principal.getName()));
         return ResponseEntity.ok(userDto);
     }
 

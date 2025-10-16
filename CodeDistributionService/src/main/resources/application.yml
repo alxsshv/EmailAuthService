@@ -1,0 +1,21 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: CodeDistributionService
+  profiles:
+    active: local
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "local"
+  kafka:
+    bootstrap-servers: localhost:9092
+
+app:
+  kafka:
+    codeNotificationTopic: "code-notification-topic"
+    codeNotificationGroupId: "code-notification-group"

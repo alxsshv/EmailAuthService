@@ -15,6 +15,7 @@
         <postgresql.version>42.7.8</postgresql.version>
         <jedis.version>6.2.0</jedis.version>
         <mapstruct.version>1.6.3</mapstruct.version>
+        <spring-kafka-version>3.3.10</spring-kafka-version>
     </properties>
 
 
@@ -42,19 +43,14 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+            <version>${spring-kafka-version}</version>
+        </dependency>
+        <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>${jedis.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>${mapstruct.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <version>${mapstruct.version}</version>
         </dependency>
 
     </dependencies>

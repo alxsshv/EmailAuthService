@@ -8,7 +8,6 @@ import com.alxsshv.entity.Authorities;
 import com.alxsshv.entity.Status;
 import com.alxsshv.exception.AuthenticationProcessingException;
 import com.alxsshv.exception.EntityNotFoundException;
-import com.alxsshv.security.AccountDetails;
 import com.alxsshv.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,7 +30,7 @@ public class SecurityServiceImpl implements SecurityService {
 
     private final AuthPairService authPairService;
 
-    private final CodeDistributionService codeDistributionService;
+    private final CodeSendingService codeSendingService;
 
     private final JwtService jwtService;
 
@@ -46,7 +45,7 @@ public class SecurityServiceImpl implements SecurityService {
             account = createAccount(email);
         }
         AuthPair authPair = authPairService.createAndSaveAuthPair(account);
-        codeDistributionService.sendCode(authPair);
+        codeSendingService.sendCode(authPair);
     }
 
     private Account createAccount(String email) {
