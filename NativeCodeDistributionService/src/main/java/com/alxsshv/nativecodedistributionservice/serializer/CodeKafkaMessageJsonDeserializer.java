@@ -1,7 +1,6 @@
 package com.alxsshv.nativecodedistributionservice.serializer;
 
 import com.alxsshv.nativecodedistributionservice.dto.CodeKafkaMessage;
-import com.alxsshv.nativecodedistributionservice.exception.KafkaValueDeserializationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -19,13 +18,13 @@ public class CodeKafkaMessageJsonDeserializer implements Deserializer<CodeKafkaM
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public CodeKafkaMessage deserialize(String s, byte[] bytes) {
+    public CodeKafkaMessage deserialize(String topic, byte[] bytes) {
         try {
             return objectMapper.readValue(bytes, CodeKafkaMessage.class);
         } catch (Exception ex) {
             String errorMessage = "CodeKafkaMessage deserialization error: " + ex.getMessage();
             log.error(errorMessage);
-            throw new KafkaValueDeserializationException(errorMessage);
+            return null;
         }
     }
 

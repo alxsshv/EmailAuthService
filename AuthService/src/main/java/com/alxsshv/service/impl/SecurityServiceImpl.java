@@ -75,13 +75,6 @@ public class SecurityServiceImpl implements SecurityService {
         }
     }
 
-
-    private void validateCode(AuthPair authPair, String code) {
-        if (!authPair.getCode().equals(code)) {
-            throw new AuthenticationProcessingException("Ошибка аутентификации. Код не действителен или просрочен");
-        }
-    }
-
     private void activateAccountIfDisable(Account account) {
         if (account.getStatus().equals(Status.DISABLED)) {
             accountService.activateAccount(account.getId());

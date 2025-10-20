@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "app_users")
+@Table(name = "accounts")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

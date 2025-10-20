@@ -76,7 +76,7 @@ public class SecurityConfig {
                         .requestMatchers(AUTH_CODE_ENTRY_POINT).permitAll()
                         .anyRequest().authenticated())
                 .cors(Customizer.withDefaults())
-                .csrf(csrfConfigurer -> csrfConfigurer.disable())
+                .csrf(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()));
         return http.build();

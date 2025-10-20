@@ -3,14 +3,17 @@ package com.alxsshv.service.impl;
 import com.alxsshv.dto.CodeKafkaMessage;
 import com.alxsshv.entity.AuthPair;
 import com.alxsshv.service.CodeSendingService;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;
 
+@Validated
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -23,6 +26,10 @@ public class CodeSendingServiceImpl implements CodeSendingService {
 
     @Override
     public void sendCode(AuthPair authPair) {
+        if (authPair == null) {
+            log.error("Service received a null value instead of an authorization pair");
+            return;
+        }
         log.info("Вам выдан код авторизации: {}", authPair.getCode());
         CodeKafkaMessage message = new CodeKafkaMessage(authPair.getEmail(), authPair.getCode());
         String key = UUID.randomUUID().toString();

@@ -32,6 +32,10 @@ public class JWTServiceImpl implements JwtService {
 
     @Override
     public String generateAccessToken(Account account) {
+        if (account == null) {
+            throw new IllegalArgumentException("The JWT service received a null value instead of an account ");
+        }
+
         String authorities = account.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));

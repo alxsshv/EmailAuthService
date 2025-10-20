@@ -5,15 +5,19 @@ import com.alxsshv.exception.EntityNotFoundException;
 import com.alxsshv.entity.Account;
 import com.alxsshv.repository.AccountRepository;
 import com.alxsshv.service.AccountService;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Validated
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
@@ -22,13 +26,13 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public Account addAccount(Account account) {
+    public Account addAccount(@NotNull Account account) {
        return accountRepository.save(account);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public Account activateAccount(UUID accountId) {
+    public Account activateAccount(@NotNull UUID accountId) {
         Account account = getAccountById(accountId);
         account.setStatus(Status.ENABLED);
         return accountRepository.save(account);
@@ -40,14 +44,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account getAccountById(UUID userId) {
+    public Account getAccountById(@NotNull UUID userId) {
         Optional<Account> userOpt = accountRepository.findById(userId);
         return userOpt.orElseThrow(
                 () -> new EntityNotFoundException(String.format("Пользователь с id = %s не найден", userId)));
     }
 
     @Override
-    public Account getAccountByEmail(String email) {
+    public Account getAccountByEmail(@NotBlank String email) {
         Optional<Account> userOpt = accountRepository.findByEmail(email);
         return userOpt.orElseThrow(
                 () -> new EntityNotFoundException(String.format("Пользователь с email = %s не найден", email)));

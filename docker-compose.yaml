@@ -22,7 +22,7 @@ services:
       - "6379:6379"
 
   broker:
-    image: apache/kafka:latest
+    image: apache/kafka:4.0.1
     hostname: broker
     container_name: broker
     ports:

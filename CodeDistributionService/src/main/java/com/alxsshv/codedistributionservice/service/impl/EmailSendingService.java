@@ -13,11 +13,10 @@ public class EmailSendingService implements CodeSendingService {
 
     @Override
     public void send(Object to, String code) {
-
         if (to instanceof String email && isEmail(email)) {
             log.info("Authorization code: {} has been sent to email {}", code, email);
         } else {
-            log.error("This service not supported sending for this address type");
+            log.warn("This service not supported sending for this address type");
         }
     }
 
